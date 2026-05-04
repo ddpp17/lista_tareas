@@ -39,6 +39,17 @@
 
 </div>
 
+<!-- 👇 MODAL PERSONALIZADO -->
+<div id="modal" class="modal hidden">
+    <div class="modal-content">
+        <p id="modalText"></p>
+        <div class="modal-buttons">
+            <button id="confirmBtn">Eliminar</button>
+            <button id="cancelBtn">Cancelar</button>
+        </div>
+    </div>
+</div>
+
 <script src="script.js"></script>
 
 <script>
@@ -47,7 +58,6 @@ if ("serviceWorker" in navigator) {
         .then(() => console.log("Service Worker registrado"));
 }
 </script>
-<!-- mejoras:
- que al darle clic para agregar tarea, sno haga zoom. -->
+
 </body>
 </html>

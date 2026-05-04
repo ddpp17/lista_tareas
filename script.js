@@ -1,3 +1,10 @@
+const modal = document.getElementById("modal");
+const modalText = document.getElementById("modalText");
+const confirmBtn = document.getElementById("confirmBtn");
+const cancelBtn = document.getElementById("cancelBtn");
+
+
+
 // ELEMENTOS BLOQUE 1
 const input1 = document.getElementById("input1");
 const btn1 = document.getElementById("btn1");
@@ -110,22 +117,37 @@ function createTask(taskObj, list, tasks, key) {
         }
     };
 
-    // ELIMINAR
-    const btnDelete = document.createElement("button");
-    btnDelete.className = "delete";
-    btnDelete.innerHTML = '<i class="bi bi-trash"></i>';
+// ELIMINAR
+const btnDelete = document.createElement("button");
+btnDelete.className = "delete";
+btnDelete.innerHTML = '<i class="bi bi-trash"></i>';
 
-    btnDelete.onclick = () => {
-        if (confirm(`¿Está seguro que desea eliminar la tarea:\n"${taskObj.text}"?`)) {
-            task.remove();
-            tasks = tasks.filter(t => t.id !== taskObj.id);
-            save(key, tasks);
-        }
+btnDelete.onclick = () => {
+
+    const currentText = span.textContent;
+
+    // mostrar modal
+    modal.classList.remove("hidden");
+    modalText.textContent = `¿Eliminar la tarea "${currentText}"?`;
+
+    // confirmar eliminación
+    confirmBtn.onclick = () => {
+        task.remove();
+        tasks = tasks.filter(t => t.id !== taskObj.id);
+        save(key, tasks);
+
+        modal.classList.add("hidden");
     };
 
-    buttons.append(btnComplete, btnUndo, btnEdit, btnDelete);
-    task.append(span, buttons);
-    list.appendChild(task);
+    // cancelar
+    cancelBtn.onclick = () => {
+        modal.classList.add("hidden");
+    };
+};
+
+buttons.append(btnComplete, btnUndo, btnEdit, btnDelete);
+task.append(span, buttons);
+list.appendChild(task);
 }
 
 // ACTUALIZAR

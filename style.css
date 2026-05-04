@@ -118,3 +118,55 @@ body {
 .undo:hover { color: #ffc107; }
 .edit:hover { color: #00c896; }
 .delete:hover { color: #ff4d4d; }
+
+
+
+
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: #1a1f3a;
+    padding: 20px;
+    border-radius: 16px;
+    color: white;
+    width: 80%;
+    max-width: 300px;
+    text-align: center;
+}
+
+.modal-buttons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-buttons button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#confirmBtn {
+    background: #ff4d4d;
+    color: white;
+}
+
+#cancelBtn {
+    background: #ccc;
+}
