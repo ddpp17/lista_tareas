@@ -1,4 +1,4 @@
-const CACHE_NAME = "tareas-cache-v2";
+const CACHE_NAME = "tareas-cache";
 
 const urlsToCache = [
   "/",
@@ -10,6 +10,7 @@ const urlsToCache = [
 
 // INSTALAR
 self.addEventListener("install", event => {
+  self.skipWaiting(); // activa inmediatamente
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
@@ -18,20 +19,24 @@ self.addEventListener("install", event => {
 
 // ACTIVAR
 self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(
-        keys.filter(key => key !== CACHE_NAME)
-            .map(key => caches.delete(key))
-      );
-    })
-  );
+  event.waitUntil(self.clients.claim()); // controla la app de una
 });
 
-// FETCH (CACHE FIRST)
+// FETCH (NETWORK FIRST)
 self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
+    fetch(event.request)
+      .then(response => {
+        // actualizar cache automáticamente
+        const responseClone = response.clone();
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, responseClone);
+        });
+        return response;
+      })
+      .catch(() => {
+        // si no hay internet, usa cache
+        return caches.match(event.request);
+      })
   );
 });
