@@ -3,8 +3,6 @@ const modalText = document.getElementById("modalText");
 const confirmBtn = document.getElementById("confirmBtn");
 const cancelBtn = document.getElementById("cancelBtn");
 
-
-
 // ELEMENTOS BLOQUE 1
 const input1 = document.getElementById("input1");
 const btn1 = document.getElementById("btn1");
@@ -110,48 +108,52 @@ function createTask(taskObj, list, tasks, key) {
     btnEdit.innerHTML = '<i class="bi bi-pencil"></i>';
 
     btnEdit.onclick = () => {
-        const newText = prompt("Editar tarea:", taskObj.text);
+        const newText = prompt("Editar tarea:", span.textContent);
+
         if (newText && newText.trim() !== "") {
             span.textContent = newText;
             update(taskObj.id, { text: newText }, tasks, key);
         }
     };
 
-// ELIMINAR
-const btnDelete = document.createElement("button");
-btnDelete.className = "delete";
-btnDelete.innerHTML = '<i class="bi bi-trash"></i>';
+    // ELIMINAR
+    const btnDelete = document.createElement("button");
+    btnDelete.className = "delete";
+    btnDelete.innerHTML = '<i class="bi bi-trash"></i>';
 
-btnDelete.onclick = () => {
+    btnDelete.onclick = () => {
 
-    const currentText = span.textContent;
+        const currentText = span.textContent;
 
-    // mostrar modal
-    modal.classList.remove("hidden");
-    modalText.textContent = `¿Eliminar la tarea "${currentText}"?`;
+        modal.classList.remove("hidden");
+        modalText.textContent = `¿Eliminar la tarea "${currentText}"?`;
 
-    // confirmar eliminación
-    confirmBtn.onclick = () => {
-        task.remove();
-        tasks = tasks.filter(t => t.id !== taskObj.id);
-        save(key, tasks);
+        confirmBtn.onclick = () => {
+            task.remove();
 
-        modal.classList.add("hidden");
+            const index = tasks.findIndex(t => t.id === taskObj.id);
+            if (index !== -1) tasks.splice(index, 1);
+
+            save(key, tasks);
+            modal.classList.add("hidden");
+        };
+
+        cancelBtn.onclick = () => {
+            modal.classList.add("hidden");
+        };
     };
 
-    // cancelar
-    cancelBtn.onclick = () => {
-        modal.classList.add("hidden");
-    };
-};
-
-buttons.append(btnComplete, btnUndo, btnEdit, btnDelete);
-task.append(span, buttons);
-list.appendChild(task);
+    buttons.append(btnComplete, btnUndo, btnEdit, btnDelete);
+    task.append(span, buttons);
+    list.appendChild(task);
 }
 
-// ACTUALIZAR
+// ACTUALIZAR (CORREGIDO 🔥)
 function update(id, changes, tasks, key) {
-    tasks = tasks.map(t => t.id === id ? { ...t, ...changes } : t);
-    save(key, tasks);
+    const task = tasks.find(t => t.id === id);
+
+    if (task) {
+        Object.assign(task, changes); // 👈 muta el objeto real
+        save(key, tasks);
+    }
 }
