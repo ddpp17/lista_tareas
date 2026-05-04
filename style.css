@@ -43,10 +43,11 @@ body {
 
 .task-input input {
     flex: 1;
-    padding: 12px;
-    border-radius: 12px;
+    padding: 16px;        /* más alto */
+    border-radius: 14px;
     border: none;
     outline: none;
+    font-size: 18px;      /* 👈 importante para iPhone (evita zoom). minimo 16px */
 }
 
 .task-input button {
@@ -62,8 +63,21 @@ body {
 /* LISTA */
 .task-list {
     max-height: 300px;
-    overflow-y: auto;
+    overflow-y: scroll;              /* fuerza scroll */
+    scrollbar-width: thin;           /* Firefox */
 }
+
+/* Chrome / Edge / Safari */
+.task-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.task-list::-webkit-scrollbar-thumb {
+    background: #00c896;
+    border-radius: 10px;
+}
+
+
 
 /* TAREA */
 .task {
